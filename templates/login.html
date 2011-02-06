@@ -1,0 +1,32 @@
+<html>
+<head>
+</head>
+<body>
+
+<form method="POST" action="login/host"> <p>
+<font size="2"> <strong> Enter user ID and password: </strong></font>
+<br>
+<strong> User ID</strong> <input type:q="text" size="20" name="user">
+<strong> Password </strong>  <input type="password" size="20" name="pass">
+<br>
+<br>
+<font size="2">  <strong> And then click this button: </strong></font>
+<input type="submit" name="login" value="Login">
+
+
+  {% if error %}
+      {% if error == 'AUTH_FAILED' %}
+          <p>Authentication failed</p>
+      {% else %}{% if error == 'AUTH_DISABLED' %}
+          <p>Your account is disabled</p>
+      {% else %}{% if error == 'AUTH_DENIED' %}
+          <p>You did not allow access</p>
+       {% endif %}{% endif %}{% endif %}
+  {% else %}
+    <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup">
+<img src="http://developers.facebook.com/images/devsite/login-button.png"/></a>
+  {% endif %}
+
+
+</body>
+</html>

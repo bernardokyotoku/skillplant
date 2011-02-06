@@ -1,0 +1,13 @@
+./a/script.js
+./addition/models.py
+./addition/questionnaier.html
+./game/models.py
+./game/setup.py
+./multiplication/models.py
+./multiplication/views.py
+./static/add_question.svg
+./static/question.svg
+./static/script.js
+./student/models.py
+./templates/question.svg
+./templates/script.js
