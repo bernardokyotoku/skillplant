@@ -6,7 +6,7 @@ urlpatterns = patterns('',
 	('^_ah/warmup$', 'djangoappengine.views.warmup'),
 #	('^game/',include('game.urls')),
 	('^addition/', include('addition.urls')),
-	('^login/', include('login.urls')),
+	('^socialauth/', include('socialauth.urls')),
 	('^student/$',include('student.urls')),
 	('^addition$',include('addition.urls')),
 )

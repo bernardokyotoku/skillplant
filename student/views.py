@@ -1,5 +1,4 @@
 from student.models import Student 
-from login.models import FacebookSession
 from django.template import loader,Context
 from django.template.loader import render_to_string
 from django.http import HttpResponse
