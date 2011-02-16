@@ -8,6 +8,7 @@ import os
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
 
 AUTHENTICATION_BACKENDS = (
+	'django.contrib.auth.backends.ModelBackend',
 	'socialauth.auth_backend.OpenIdBackend',
 	'socialauth.auth_backend.TwitterBackend',
 	'socialauth.auth_backend.FacebookBackend',
@@ -30,6 +31,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'djangotoolbox',
+	'django.contrib.admin',
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
 )
@@ -38,7 +40,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'openid_consumer.middleware.OpenIDMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',   
+    #'django.middleware.csrf.CsrfViewMiddleware',   
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
@@ -65,7 +67,7 @@ LOGOUT_REDIRECT_URL = '/'
 SITE_ID = 29
 
 DATABASE_ENGINE = 'sqlite3'  
-DATABASE_NAME = 'Users/bernardo/Project/skillplant2/db/data'             
+DATABASE_NAME = 'Users/bernardo/Project/skillplant/db/data'             
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.

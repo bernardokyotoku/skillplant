@@ -2,6 +2,7 @@ from student.models import Student
 from django.db import models
 from datetime import date
 import django.utils.simplejson as json
+from django.contrib.auth.models import User
 
 class AddQuestion(models.Model):
 	first = models.IntegerField()
@@ -24,7 +25,8 @@ class AddQuestion(models.Model):
 		return str(self.first)+'+'+str(self.second)+'= '
 
 class Answer(models.Model):
-	student = models.ForeignKey(Student)
+	#student = models.ForeignKey(Student)
+	user = models.ForeignKey(User)
 	question = models.ForeignKey(AddQuestion)
 	user_answer = models.IntegerField()
 	time_taken = models.TimeField()

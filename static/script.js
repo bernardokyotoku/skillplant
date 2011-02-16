@@ -12,6 +12,9 @@ var setQuestion = function (){
 var answer_evaluation_result = function(){
 	if (request.readyState != 4) {return;}
 	alert(request.responseText);
+	if (request.responseText == 'correct'){
+		window.location = './correct.html';
+	}
 
 }
 
@@ -33,7 +36,7 @@ function send_answer(evt){
 	var ans_first_digit = dom.getElementById("ans_first_digit").childNodes[0].childNodes[0].nodeValue;
 	var ans_second_digit = dom.getElementById("ans_second_digit").childNodes[0].childNodes[0].nodeValue;
 	var answer = ans_first_digit + ans_second_digit;
-	var answer_dict = {"answer":answer,'question_key':question_key};
+	var answer_dict = "answer="+answer+"&question_key="+question_key;
 	request = new XMLHttpRequest();
 	request.open("POST","../addition/post_answer");
 	request.onreadystatechange = answer_evaluation_result;
