@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class AddQuestion(models.Model):
 	first = models.IntegerField()
 	second = models.IntegerField()
-	correct_result = models.IntegerField()
+	correct_answer = models.IntegerField()
 	@property
 	def json(self):
 		question = {
@@ -16,27 +16,16 @@ class AddQuestion(models.Model):
 			'key':self.pk
 			}
 		return json.dumps(question)
-	def __init__(self,first,second):
-		models.Model.__init__(self)
-		self.first = first
-		self.second = second
-		self.correct_result = first + second
 	def __unicode__(self):
 		return str(self.first)+'+'+str(self.second)+'= '
 
 class Answer(models.Model):
-	#student = models.ForeignKey(Student)
 	user = models.ForeignKey(User)
 	question = models.ForeignKey(AddQuestion)
 	user_answer = models.IntegerField()
-	time_taken = models.TimeField()
+	#time_taken = models.TimeField()
 	date_taken = models.DateTimeField()
-	def __init__(self,answer=None,time_taken=None,date_taken=date.today()):
-		self.parent.__init__()
-		self.user_answer = answer
-		self.time_taken = time_taken
-		self.date_taken = date_taken	
-
+	correct = models.BooleanField()
 	def __unicode__(self):
 		return str(self.question)+str(self.user_answer)
 

@@ -13,18 +13,16 @@ class Command(NoArgsCommand):
 
     def ipython(self):
         try:
-            from IPython.frontend.terminal.embed import TerminalInteractiveShell
-            shell = TerminalInteractiveShell()
+            from IPython.core.embed import InteractiveShell
+            shell = InteractiveShell()
             shell.mainloop()
         except ImportError:
             # IPython < 0.11
             # Explicitly pass an empty list as arguments, because otherwise
             # IPython would use sys.argv from this script.
             try:
-                #from IPython.Shell import IPShell
-		from IPython.core.iplib import InteractiveShell
-		shell = InteractiveShell()
-                #shell = IPShell(argv=[])
+                from IPython.Shell import IPShell
+                shell = IPShell(argv=[])
                 shell.mainloop()
             except ImportError:
                 # IPython not found at all, raise ImportError

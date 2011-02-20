@@ -25,7 +25,7 @@ handlers:
   script: djangoappengine/appstats/ui.py
 
 - url: /media/admin
-  static_dir: django/contrib/admin/media
+  static_dir: django/contrib/admin/media/
   expiration: '0'
 
 - url: /.*
