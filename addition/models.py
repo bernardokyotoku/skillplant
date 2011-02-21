@@ -21,7 +21,8 @@ class AddQuestion(models.Model):
 
 class Answer(models.Model):
 	user = models.ForeignKey(User)
-	question = models.ForeignKey(AddQuestion)
+	#question = models.ForeignKey(AddQuestion)
+	question_id = models.IntegerField()
 	user_answer = models.IntegerField()
 	#time_taken = models.TimeField()
 	date_taken = models.DateTimeField()

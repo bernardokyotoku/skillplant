@@ -1,33 +1,64 @@
-from addition.models import AddQuestion
-
-def select_question(user):
-	question = AddQuestion.objects.get(first=3,second=4)
-	return question 
+from addition.models import Answer
+import math
 			
 def generateAllQuestions():
 	for i in range(1,11):
-		for j in range(1,11):
+		for j in range(1,i+1):
 			question = AddQuestion()
 			question.first = i
 			question.second = j
 			question.correct_answer = i+j
-			question.save()
+			print question
 	return
+			
+def select_question(user):
+	dominance = get_dominance_for(user)
+	dom = map(dominance,range(1,55))
+	hmd = max(dom)/2
+	domi = [(dom[i-1],i) for i in range(1,55)] 
+	domi.sort()
+	sor_do = [i[0]<hmd for i in domi]
+	print sor_do
+	if True not in sor_do:
+		halfMaxCrossIndex = 0
+	else:
+		halfMaxCrossIndex = sor_do.index(True) 
+	index = raffle(halfMaxCrossIndex,10)
+	selected_question = domi[index][1]
+	question =  naturalLearningOrder(selected_question)
+	qdict = {'first':question[0],'second':question[1]}
+	return qdict
 
+def raffle(center,width):
+	import random
+	return abs(int(random.gauss(center,width)))
 
-#def dominance(question,user):
-#	try:
-#	ans = Answer.objects.filter(question=question,user=user)	
-#	except NoSuchElement:
-#		return 0
-#	return 1/average_time(answer)	
-#	
-#def average_time(answer):
-#	if len(ans) > 4:
-#		last_ans = ans[-5,-1]
-#	else:
-#		last_ans = ans
-#	time = []
-#	for answer = last_answers:
-#		time += [answer.time_taken]
-#	return sum(time)/len(time)
+def get_dominance_for(user):
+	return lambda question : dominance(question,user)
+	
+def naturalLearningOrder(num):
+	i = revSum(num)
+	return (i,num-apSum(i-1))
+
+def apSum(m):
+	return m*(m+1)/2
+
+def revSum(n):
+	return int(math.ceil((math.sqrt(1+8*n)-1)/2))
+
+def dominance(q_id,user):
+	answers = Answer.objects.filter(user=user)	
+	answers = answers.filter(question_id=q_id)
+	if len(answers) == 0:
+		return 0
+	return 1/average_time(answers)
+	
+def average_time(answers):
+	if len(answers) > 4:
+		last_answers = answers[-5,-1]
+	else:
+		last_answers = answers
+	time = []
+	for answer in last_answers:
+		time += [answer.time_taken]
+	return sum(time)/len(time)

@@ -1,12 +1,15 @@
 var dom = null;
-var question_key = null;
+var first_number = null;
+var second_number = null;
 
 var setQuestion = function (){
 	if (request.readyState != 4)  { return; }
+	alert(request.responseText)
 	question = JSON.parse(request.responseText);
-	dom.getElementById("first_number").childNodes[0].childNodes[0].nodeValue=question.first;
-	dom.getElementById("second_number").childNodes[0].childNodes[0].nodeValue=question.second;
-	question_key = question.key;
+	first_number = question.first;
+	second_number = question.second;
+	dom.getElementById("first_number").childNodes[0].childNodes[0].nodeValue=first_number;
+	dom.getElementById("second_number").childNodes[0].childNodes[0].nodeValue=second_number;
 }
 
 var answer_evaluation_result = function(){
@@ -38,11 +41,10 @@ function on_load(evt,op){
 	dom.getElementById("answer").childNodes[0].childNodes[0].nodeValue="";
 }
 
-
 function send_answer(evt){
 	dom = evt.target.ownerDocument;
 	var answer = dom.getElementById("answer").childNodes[0].childNodes[0].nodeValue;
-	var answer_dict = "answer="+answer+"&question_key="+question_key;
+	var answer_dict = "answer="+answer+"&first="+first_number+"&second="+second_number;
 	request = new XMLHttpRequest();
 	request.open("POST","../addition/post_answer");
 	request.onreadystatechange = answer_evaluation_result;
