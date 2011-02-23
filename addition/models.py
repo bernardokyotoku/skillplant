@@ -24,9 +24,7 @@ class Answer(models.Model):
 	#question = models.ForeignKey(AddQuestion)
 	question_id = models.IntegerField()
 	user_answer = models.IntegerField()
-	#time_taken = models.TimeField()
+	time_taken = models.TimeField()
 	date_taken = models.DateTimeField()
 	correct = models.BooleanField()
-	def __unicode__(self):
-		return str(self.question)+str(self.user_answer)
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import loader,Context
 from django.http import HttpResponse
-from datetime import datetime
+from datetime import datetime, timedelta
 import student as stdent
 import django.utils.simplejson as json
 from addition import engine
@@ -24,6 +24,7 @@ def store_answer_and_return_evaluation(request):
 	answer.user_answer = int(request.POST['answer'])
 	answer.correct = (answer.user_answer == bigger + smaller)
 	answer.date_taken = datetime.now()
+	answer.time_taken = timedelta(seconds=float(request.POST['time']))
 	answer.save()
 	if answer.correct:
 		return HttpResponse('correct')
