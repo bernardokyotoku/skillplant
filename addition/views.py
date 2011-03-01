@@ -1,3 +1,4 @@
+import sys
 from django.shortcuts import render_to_response
 from django.template import loader,Context
 from django.http import HttpResponse
@@ -29,3 +30,8 @@ def store_answer_and_return_evaluation(request):
 	if answer.correct:
 		return HttpResponse('correct')
 	return HttpResponse('incorrect')
+
+def dominance_question_data(request):
+	dominance_questions = engine.sorted_dominance_question_array(request.user)
+	data = dict(zip(('dominance','questions','sdf'),dominance_questions+[tuple(range(1,55)),]))
+	return HttpResponse(json.dumps(data))

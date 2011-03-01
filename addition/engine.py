@@ -1,32 +1,37 @@
 from addition.models import Answer
 import math
-			
-def generateAllQuestions():
-	for i in range(1,11):
-		for j in range(1,i+1):
-			question = AddQuestion()
-			question.first = i
-			question.second = j
-			question.correct_answer = i+j
-			print question
-	return
+import sys
 			
 def select_question(user):
-	dominance = get_dominance_for(user)
-	dom = map(dominance,range(1,55))
-	hmd = max(dom)/2
-	domi = [(dom[i-1],i) for i in range(1,55)] 
-	domi.sort()
-	sor_do = [i[0]<hmd for i in domi]
+	dominance,questions = sorted_dominance_question_array(user)
+	hmd = max(dominance)/2
+	sor_do = map(lambda i:i<hmd,dominance)
 	if True not in sor_do:
 		halfMaxCrossIndex = 0
 	else:
 		halfMaxCrossIndex = sor_do.index(True) 
 	index = raffle(halfMaxCrossIndex,4)
-	selected_question = domi[index][1]
+	selected_question = questions[index]
 	question =  naturalLearningOrder(selected_question)
 	qdict = {'first':question[0],'second':question[1]}
 	return qdict
+
+def sorted_dominance_question_array(user):
+	question = range(1,55)
+	dominance = map(get_dominance_for(user),question)
+	return sort_array((dominance,question))
+
+def transpose(arg):
+	return zip(*arg)
+
+def sort_array(arg):
+	arg = [arg[0],map(lambda x:-x,arg[1])]
+	a = transpose(arg)
+	a.sort()
+	a.reverse()
+	a = transpose(a)
+	a = [a[0],map(lambda x:-x,a[1])]
+	return a
 
 def raffle(center,width):
 	import random
@@ -55,10 +60,11 @@ def dominance(q_id,user):
 def average_time(answers):
 	if len(answers) > 4:
 		answers.order_by('date_taken')
-		last_answers = answers.reverse()[:5]
+		answers.reverse()
+		last_answers = answers[:5]
 	else:
 		last_answers = answers
 	time = []
 	for answer in last_answers:
-		time += [answer.time_taken.second]
+		time += [answer.time_taken.second+float(answer.time_taken.microsecond)/1000000]
 	return sum(time)/len(time)

@@ -6,7 +6,7 @@ handler500 = 'djangotoolbox.errorviews.server_error'
 
 urlpatterns = patterns('',
 	('^_ah/warmup$', 'djangoappengine.views.warmup'),
-#	('^game/',include('game.urls')),
+#	('^$', 'socialauth.views.login_page'),
 	('^$', 'login.log'),
     (r'^admin/', include('urlsadmin')),
 	('^addition/', include('addition.urls')),

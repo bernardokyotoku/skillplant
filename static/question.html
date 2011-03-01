@@ -1,7 +1,131 @@
 <html>
 <head>
+<script src="./jquery.js"></script>
+<script src="./transpose.js"></script>
+<script src="./jquery.flot.js"></script>
+<script src="./stopwatch.js"></script>
+<style>
+table.num_pad td {
+	background-color:red;
+	color:white;
+	width:33%;
+	text-align:center;
+	font-size:30;
+	}
+table.num_pad {
+	width:300;
+	height:400;
+	}
+#question_line {
+	width:800;
+}
+table.question_line td {
+	width:200;
+	text-align:center;
+}
+table.question td {
+	background-color:blue;
+	color:white;
+	font-size:40;}{}
+#display {
+	font-size:40;
+}
+</style>
 </head>
 <body>
-<embed id="embed" src="question.svg" width="800" height="600" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+<table border="1" id="question_line" align="center" >
+<td width="33%" >
+<table align="center" id="question" class="question">
+	<tr>
+	<td id="first">1</td> <td>+</td> <td id="second">1</td> <td>=</td> <td id="answer"></td>
+	</tr>
+</table>
+</td><td width="33%" align="center"><p id="display">1</p></td>
+</table> 
+<table id="center" width="100%"> 
+	<td>
+		<table id="num_pad" class="num_pad">
+			<tr>
+				<td>1</td> <td>2</td><td>3</td>
+			</tr>
+			<tr>
+				<td>4</td> <td>5</td><td>6</td>
+			</tr>
+			<tr>
+				<td>7</td> <td>8</td><td>9</td>
+			</tr>
+			<tr>
+				<td>delete</td> <td>0</td><td>enter</td>
+			</tr>
+		</table>
+	</td><td>
+		<div id="graph" style="width:600px;height:300px;"></div>
+	</td>
+</table>
+<!--<embed id="embed" src="question.svg" width="800" height="600" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />-->
 </body>
+<script>
+	stop_watch_display = $("#display")[0].lastChild;
+	$("#num_pad").click(ans);
+	$(document).ready(on_load);
+
+var setQuestion = function (){
+	if (request.readyState != 4)  { return; }
+	question = JSON.parse(request.responseText);
+	$("#first").text(question.first);
+	$("#second").text(question.second); 
+	startstop()
+}
+
+var answer_evaluation_result = function(){
+	if (request.readyState != 4) {return;}
+	var result = request.responseText;
+	//alert(result);
+	if (result == "correct"){
+		window.location = './correct.html';
+	}else{
+		window.location = './incorrect.html';
+	}
+	return;
+}
+
+
+function on_load(){
+	URL = "../addition/get_question";
+	request = new XMLHttpRequest();
+	request.open("GET", URL); 
+	request.onreadystatechange = setQuestion ;
+	request.send(null); 
+	$.getJSON("../addition/get_dominance_questions",function (data){
+	data= [data.sdf, data.dominance ].transpose();
+    $.plot($("#graph"),[data]);
+});
+}
+
+function send_answer(evt){
+	startstop();
+	var answer_dict = "answer=" + $("#answer").text() +
+		"&first=" + $("#first").text() +
+		"&second=" + $("#second").text() +
+		"&time=" + stop_watch_display.nodeValue/1000;
+	request = new XMLHttpRequest();
+	request.open("POST","../addition/post_answer");
+	request.onreadystatechange = answer_evaluation_result;
+	request.send(answer_dict);
+}
+
+function backspace(evt){
+	$("#answer").text($("#answer").text().slice(0,-1)); 
+}
+
+function ans(evt) {
+	var val = evt.target.lastChild.nodeValue;
+	if (val == "enter"){ send_answer(evt);}
+	else if (val == "delete"){ backspace(evt);}
+	else { $('#answer').text($('#answer').text() + val);}
+}
+
+	
+</script>
 </html>
