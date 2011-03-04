@@ -22,11 +22,15 @@ def store_answer_and_return_evaluation(request):
 	answer.user = request.user
 	answer.question_id = engine.apSum(bigger) + smaller
 	#answer.question = question
-	answer.user_answer = int(request.POST['answer'])
+	ans = request.POST['answer'];
+	if not ans.isdigit():
+		ans=0
+	answer.user_answer = int(ans)
 	answer.correct = (answer.user_answer == bigger + smaller)
 	answer.date_taken = datetime.now()
 	answer.time_taken = timedelta(seconds=float(request.POST['time']))
 	answer.save()
+	return get_question(request)
 	if answer.correct:
 		return HttpResponse('correct')
 	return HttpResponse('incorrect')

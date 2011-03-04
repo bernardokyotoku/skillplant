@@ -38,8 +38,16 @@ def raffle(center,width):
 	return abs(int(random.gauss(center,width)))
 
 def get_dominance_for(user):
-	return lambda question : dominance(question,user)
+	answers_query = Answer.objects.filter(user=user,dominance_relevant=True)
+	answers = list(answers_query)
+	return lambda q_id : dominance(q_id,answers)
 	
+def dominance(q_id,answers):
+	q_ans = filter(lambda ans:ans.question_id == q_id,answers)	
+	if len(q_ans) is 0:
+		return 0
+	return 1/average_time(q_ans)
+
 def naturalLearningOrder(num):
 	i = revSum(num)
 	return (i,num-apSum(i-1))
@@ -50,21 +58,8 @@ def apSum(m):
 def revSum(n):
 	return int(math.ceil((math.sqrt(1+8*n)-1)/2))
 
-def dominance(q_id,user):
-	answers = Answer.objects.filter(user=user)	
-	answers = answers.filter(question_id=q_id)
-	if len(answers) is 0:
-		return 0
-	return 1/average_time(answers)
-	
 def average_time(answers):
-	if len(answers) > 4:
-		answers.order_by('date_taken')
-		answers.reverse()
-		last_answers = answers[:5]
-	else:
-		last_answers = answers
 	time = []
-	for answer in last_answers:
+	for answer in answers:
 		time += [answer.time_taken.second+float(answer.time_taken.microsecond)/1000000]
 	return sum(time)/len(time)

@@ -78,6 +78,7 @@ TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
  	'djangotoolbox.middleware.RedirectMiddleware',
+	'google.appengine.ext.appstats.recording.AppStatsDjangoMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
     'openid_consumer.middleware.OpenIDMiddleware',
