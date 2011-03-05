@@ -1,0 +1,47 @@
+<style>
+	span.key {
+		float:left;
+		border-radius:10px;
+		background-color:#262928;
+		font-family:EraserRegular;
+		width:70px;
+		height:100px;
+		font-size:70px;
+		color:rgba(229,221,179,1);
+		text-shadow:inner 0px 0px 20px rgba(84,81,75,0.5);
+		box-shadow:0px 0px 20px rgba(0,0,0,0.8);
+	}
+	div.key {
+	height:110px;
+	}
+</style>
+<div class="span-6 last right" style="display: none;" align="center" id="numpad">
+	<div class="key span-2"><span class="key">1</span></div>
+	<div class="key span-2"><span class="key">2</span></div>
+	<div class="key span-2 last"><span class="key">3</span></div>
+	<div class="key span-2 "><span class="key">4</span></div>
+	<div class="key span-2 "><span class="key">5</span></div>
+	<div class="key span-2 last"><span class="key">6</span></div>
+	<div class="key span-2"><span class="key">7</span></div>
+	<div class="key span-2"><span class="key">8</span></div>
+	<div class="key span-2 last"><span class="key">9</span></div>
+	<div class="key span-2"><span class="key">D</span></div>
+	<div class="key span-2"><span class="key">0</span></div>
+	<div class="key span-2 last"><span class="key">E</span></div>
+</div>
+<script>
+$('div.key').click(function(){ blink(this);num_enter_delete(this); });
+$('html').keypress(function(event) {
+	var pressedkey = event.which-48;
+	if (is_number(pressedkey)) {
+		var a = $('span.key:contains('+pressedkey+')');
+		blink(a);num_enter_delete(a);   
+	}
+});
+
+function is_number(x){
+	if(x>=0||x<=9){return true}
+	return false;
+}
+</script>
+
